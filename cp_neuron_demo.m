@@ -8,50 +8,64 @@ N = 50;      % neurons
 T = 60;      % time points
 K = 40;      % trials
 
-% Rank of the data. (The number of factors
-% needed to describe the data)
+% rank of the data. (the number of latent factors.)
 R = 4;
+r1 = floor(R/2); % split the latent factors to add interesting structure
+
+% factor magnitude
+lam = ones(R,1);%logspace(0.5,-0.5,R)';
+lam = lam(randperm(R));
 
 % neuron factors
+% ---------------
 A = randn(N,R);
 
-% time (within-trial) factors
-B = randn(T,R);
-
-% smooth within-trial factors (neural firing rates
-% or fluorescence shouldn't change instantaneously)
-gauss_sigma = round(T/8);
-t_ax = (-4*gauss_sigma):(4*gauss_sigma);
-gaussFilter = exp(-t_ax.^2 / (2*gauss_sigma^2));
-gaussFilter = gaussFilter / sum(gaussFilter); % normalize
-for r = 1:R
-    B(:,r) = conv(B(:,r), gaussFilter, 'same');
-end
-
-% preallocated across-trial factors
-C = zeros(K,R);
-
-% add more structure to data
-% --------------------------
-n1 = floor(N/2);     % split between cell type 1 and cell type 2
-k1 = floor(K/3);     % split between trial type 1 -> trial type 2
-k2 = floor(2*K/3);   % split between trial type 2 -> trial type 1
-r1 = floor(R/2);     % split the latent factors
-
 % add cell types
+%   - first half of the cells are strongly weighted on first half of
+%   components
+%   - second half of the cells are strongly weighted to the other half
+n1 = floor(N/2);
 A(1:n1,1:r1) = 0.1*A(1:n1,1:r1);
 A((n1+1):end,(r1+1):end) = 0.1*A((n1+1):end,(r1+1):end);
 
-% add trial-to-trial structure
-%   - first one-third of trials are trial type 1
-%   - the middle third of trials are trial type 2
-%   - the final third of trials are trial type 1
-for r = 1:r1
-    C(1:k1,r) = 1.0;
-    C(k2:end,r) = 1.0;
+% threshold small values of A
+A(abs(A) < 0.1) = 0.0;
+
+% time (within-trial) factors
+% ---------------------------
+B = zeros(T,R);
+t_ax = linspace(-3, 3, T);
+m = linspace(-3, 3, R);
+
+% Each neuron factor is a gaussian bump
+for r = 1:R
+    B(:,r) = exp(-(t_ax-m(r)).^2 / 2);
+    B(:,r) = B(:,r)/norm(B(:,r));
 end
-for r = (r1+1):R
-    C(k1:k2,r) = 1.0;
+
+% across-trial factors
+% --------------------
+C = 0.4*randn(K,R);
+
+% split trials into thirds
+k1 = floor(K/3);
+k2 = floor(2*K/3);
+
+% one factor is large for middle third of trials
+C(k1:k2, 1) = C(k1:k2, 1) + 1;
+
+% one factor is large for final third of trials
+C(k2:end, 2) = C(k2:end, 2) + 1;
+
+% one factor grows linearly
+C(:, 3) = C(:, 3) + (1:K)'/K;
+
+% one is noisy across all trials
+C(:, 4) = C(:, 4)*10;
+
+% normalize factors to unit length
+for r = 1:R
+    C(:,r) = C(:,r)/norm(C(:,r));
 end
 
 % generate the full dataset
@@ -62,7 +76,7 @@ for n = 1:N
         for k = 1:K
             tmp = 0.0;
             for r = 1:R
-                tmp = tmp + A(n,r)*B(t,r)*C(k,r);
+                tmp = tmp + lam(r)*A(n,r)*B(t,r)*C(k,r);
             end
             data(n,t,k) = tmp;
         end
@@ -70,8 +84,20 @@ for n = 1:N
 end
 
 % add some noise
-noise_lev = 0.2;
+noise_lev = 0.01;
 data = data + randn(N,T,K)*noise_lev;
+
+% % NOTE - you can view the full dataset by uncommenting
+% % the following code
+% movie_fig = figure();
+% for k = 1:K
+%     image(data(:,:,k),'CDataMapping','scaled')
+%     ylabel('neurons')
+%     xlabel('time')
+%     title(['trial ' num2str(k)])
+%     pause(0.3)
+% end
+% close(movie_fig);
 
 %% Fit CP Tensor Decomposition
 
@@ -81,16 +107,39 @@ data = data + randn(N,T,K)*noise_lev;
 % convert data to a tensor object
 data = tensor(data);
 
-% fit the model
-est_factors = cp_als(tensor(data),R);
-
-% the true
-true_factors = ktensor(ones(R,1), A, B, C);
-
-% visualize the result
-visualize_neuron_ktensor(est_factors)
-title('estimated factors')
-
-% compare to grouth truth
+% plot the ground truth
+true_factors = ktensor(lam, A, B, C);
+true_err = norm(full(true_factors) - data)/norm(true_factors);
 visualize_neuron_ktensor(true_factors)
 title('true factors')
+
+% fit the cp decomposition from random initial guesses
+n_fits = 30;
+err = zeros(n_fits,1);
+for n = 1:n_fits
+    % fit model
+    est_factors = cp_als(tensor(data),R);
+    
+    % store error
+    err(n) = norm(full(est_factors) - data)/norm(data);
+    
+    % visualize fit for first several fits
+    if n < 4
+        % score aligns the cp decompositions
+        [sc, est_factors] = score(est_factors, true_factors);
+        
+        % plot the estimated factors
+        visualize_neuron_ktensor(est_factors)
+        title(['estimated factors - fit #' num2str(n)])
+    end
+end
+
+figure(); hold on
+plot(randn(n_fits,1), err, 'ob')
+plot(0, true_err, 'or', 'markerfacecolor', 'r');
+xlim([-10,10])
+%ylim([0 1.0])
+set(gca,'xtick',[])
+ylabel('model error')
+legend('fits','true model')
+

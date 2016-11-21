@@ -152,8 +152,12 @@ for idx = 1:length(tnsrlist)
     end
 end
 
-% make the ylims look nice before returning
-pretty_ylims(Ax, res.ylims, res.link_yax);        
+% make the ylims look nice
+pretty_ylims(Ax, res.ylims, res.link_yax);
+
+% activate invisible large axes so user can specify title at top
+axes('fontsize',16)
+axis off
 
 %%%%%%%%%%%%%%%%%%%
 % LOCAL FUNCTIONS %
@@ -173,7 +177,7 @@ function [Ax,BigAx] = setup_axes(nr, nf, space, names)
         set(BigAx(f),'Visible','off')
         pos = get(BigAx(f),'Position');
         w = pos(3);
-        h = pos(4)/nr;
+        h = pos(4)/(nr+0.2);
         pos(1:2) = pos(1:2) + space*[w h];
 
         % subaxes
