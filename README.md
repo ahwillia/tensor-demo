@@ -38,7 +38,7 @@ Open MATLAB and navigate the folder containing this code and run the script `cp_
 You can play with various parameters/settings on the synthetic data. As long as noise is low enough, the CP decomposition (fit by alternating least-squares, as reviewed in [Kolda & Bader](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)) should do a pretty good job of estimating the true latent factors:
 
 
-| ![True factors](true.png) | ![Estimated factors](est.png) |
+| ![True factors](img/true.png) | ![Estimated factors](img/est.png) |
 | --- | --- |
 
 Unlike PCA, CP decomposition cannot be solved in closed form -- instead, the model parameters are optimized from an initial guess. Thus, it is good practice to fit the model from multiple initial conditions, and verify that the final solution isn't too sensitive to the intial guess.
@@ -47,7 +47,7 @@ The dotplots below shows the reconstruction error for 30 model fits (blue) and t
 
 | **Data that is easy to fit** | **Data that is more difficult to fit** |
 | --- | --- |
-| ![Model error with low noise](low_noise.png) | ![Model error with factors of different magnitudes](diff_mag_factors.png) |
+| ![Model error with low noise](img/low_noise.png) | ![Model error with factors of different magnitudes](img/diff_mag_factors.png) |
 
 Even in the more difficult scenario on the right, some of the initial guesses yield very good, nearly optimal solutions.
 
