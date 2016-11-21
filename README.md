@@ -16,9 +16,9 @@ CP decomposition is an attractive technique both because it is conceptually simp
 
 **More background reading:**
 
-* [An abstract I submitted to Cosyne 2017](http://alexhwilliams.info)
+* [An abstract I submitted to Cosyne 2017](http://alexhwilliams.info/pdf/cpd_cosyne_2017.pdf)
   * *contains some illustrative results on to two experimental datasets*
-* [Some notes on PCA, CP decomposition, and Demixed PCA](http://alexhwilliams.info)
+* [Some notes on PCA, CP decomposition, and Demixed PCA](http://alexhwilliams.info/pdf/cpd_notes_janelia_2016.pdf)
   * *contains math*
 * [Bader & Kolda (2009). Tensor Decompositions and Applications. *SIAM Review*.](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)
   * *a very popular general and technical review of tensor decompositions*
@@ -37,17 +37,19 @@ Open MATLAB and navigate the folder containing this code and run the script `cp_
 
 You can play with various parameters/settings on the synthetic data. As long as noise is low enough, the CP decomposition (fit by alternating least-squares, as reviewed in [Kolda & Bader](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)) should do a pretty good job of estimating the true latent factors:
 
-![True factors](img/true.png)
 
-![Estimated factors](img/est.png)
+| ![True factors](true.png) | ![Estimated factors](est.png) |
+| --- | --- |
 
-Unlike PCA, CP decomposition cannot be solved in closed form -- instead, the model parameters are optimized from an initial guess. Thus, it is good practice to fit the model from multiple initial conditions, and verify that the final solution isn't too sensitive to this guess. Again, when noise is low enough this is the case for this dataset; the dotplot below shows the reconstruction error for 30 model fits (blue) and the reconstruction error for the true latent factors (red):
+Unlike PCA, CP decomposition cannot be solved in closed form -- instead, the model parameters are optimized from an initial guess. Thus, it is good practice to fit the model from multiple initial conditions, and verify that the final solution isn't too sensitive to the intial guess.
 
-![Model error with low noise](img/low_noise.png)
+The dotplots below shows the reconstruction error for 30 model fits (blue) and the reconstruction error for the true latent factors (red). In many cases, the CP decomposition is easy to fit (*left panel*) -- this happens when the noise is relatively low and the latent factors are of similar magnitude. In other scenarios (try playing with `lam` so that some factors are more significant than others) the synthetic data is harder to fit (*right panel*). 
 
-In certain scenarios (try playing with `lam` so that some factors are more significant than others) the synthetic data is harder to fit. In the plot below, a lot of fits get stuck in suboptimal local minima (though the correct factors are still recovered after starting from enough initial conditions!):
+| **Data that is easy to fit** | **Data that is more difficult to fit** |
+| --- | --- |
+| ![Model error with low noise](low_noise.png) | ![Model error with factors of different magnitudes](diff_mag_factors.png) |
 
-![Model error with factors of different magnitudes](img/diff_mag_factors.png)
+Even in the more difficult scenario on the right, some of the initial guesses yield very good, nearly optimal solutions.
 
 ### Contact / Future Work
 
@@ -56,4 +58,4 @@ I'm actively working on extensions and refinements to CP decomposition for my Ph
 * Generalizing CP decomposition to accomodate different loss functions and regularization choices (e.g. constraining factors to be sparse, smooth, non-negative)
 * Better tools in Python / Julia
 * Incorporating time-warping into PCA and tensor decompositions in collaboration with [@nirum](http://niru.org/) and [@poolio](http://cs.stanford.edu/~poole/)
-  * [*described in more detail here*](alexhwilliams.info/pdf/warptour_cosyne.pdf)
+  * [*described in more detail here*](alexhwilliams.info/pdf/warptour_cosyne_2017.pdf)
