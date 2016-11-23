@@ -16,12 +16,8 @@ CP decomposition is an attractive technique both because it is conceptually simp
 
 **More background reading:**
 
-* [An abstract I submitted to Cosyne 2017](http://alexhwilliams.info/pdf/cpd_cosyne_2017.pdf)
-  * *contains some illustrative results on to two experimental datasets*
 * [Some notes on PCA, CP decomposition, and Demixed PCA](http://alexhwilliams.info/pdf/cpd_notes_janelia_2016.pdf)
-  * *contains math*
 * [Bader & Kolda (2009). Tensor Decompositions and Applications. *SIAM Review*.](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)
-  * *a very popular general and technical review of tensor decompositions*
 
 ### Quickstart (MATLAB)
 
@@ -62,12 +58,3 @@ visualize_neuron_ktensor(model) % produces a nice plot for you
 ```
 
 As described above, it is a good idea to fit the model multiple times (each call to `cp_als` will start from a different random initial parameter set). Choosing the number of components (4 in the demo, 10 in the example code above) can also require a bit of experimentation.
-
-### Contact / Future Work
-
-I'm actively working on extensions and refinements to CP decomposition for my PhD thesis. [Get in touch](http://alexhwilliams.info) if you want to discuss specifics. I'm working on:
-
-* Generalizing CP decomposition to accomodate different loss functions and regularization choices (e.g. constraining factors to be sparse, smooth, non-negative)
-* Better tools in Python / Julia
-* Incorporating time-warping into PCA and tensor decompositions in collaboration with [@nirum](http://niru.org/) and [@poolio](http://cs.stanford.edu/~poole/)
-  * [*described in more detail here*](http://alexhwilliams.info/pdf/warptour_cosyne_2017.pdf)
