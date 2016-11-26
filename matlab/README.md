@@ -8,7 +8,7 @@ Then, either download this github repo as a zip file, or clone it from the comma
 $  git clone https://github.com/ahwillia/tensor-demo.git
 ```
 
-Open MATLAB and navigate the folder containing this code and run the script `cp_neuron_demo` to generate some synthetic data and fit a third-order CP decomposition.
+Open MATLAB and navigate the folder containing this code and run the script `cp_demo` to generate some synthetic data and fit a third-order CP decomposition.
 
 You can play with various parameters/settings on the synthetic data. As long as noise is low enough, the CP decomposition (fit by alternating least-squares, as reviewed in [Kolda & Bader](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)) should do a pretty good job of estimating the true latent factors:
 
@@ -28,7 +28,7 @@ Even in the more difficult scenario on the right, some of the initial guesses yi
 
 ### Take Home Message/Recipe
 
-Looking at the internals of `cp_neuron_demo` should give you a basic idea of how to apply CP decomposition to your own data. The essential workflow is embarassingly easy:
+Looking at the internals of `cp_demo` should give you a basic idea of how to apply CP decomposition to your own data. The essential workflow is embarassingly easy:
 
 ```matlab
 data = % your 3-D data (neurons x time x trials)
