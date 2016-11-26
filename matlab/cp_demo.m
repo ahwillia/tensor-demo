@@ -84,7 +84,7 @@ for n = 1:N
 end
 
 % add some noise
-noise_lev = 0.01;
+noise_lev = 0.001;
 data = data + randn(N,T,K)*noise_lev;
 
 % % NOTE - you can view the full dataset by uncommenting
@@ -110,8 +110,10 @@ data = tensor(data);
 % plot the ground truth
 true_factors = ktensor(lam, A, B, C);
 true_err = norm(full(true_factors) - data)/norm(true_factors);
-visualize_neuron_ktensor(true_factors)
-title('true factors')
+viz_ktensor(true_factors, ... 
+            'Plottype', {'bar', 'line', 'scatter'}, ...
+            'Modetitles', {'neurons', 'time', 'trials'})
+set(gcf, 'Name', 'true factors')
 
 % fit the cp decomposition from random initial guesses
 n_fits = 30;
@@ -129,8 +131,10 @@ for n = 1:n_fits
         [sc, est_factors] = score(est_factors, true_factors);
         
         % plot the estimated factors
-        visualize_neuron_ktensor(est_factors)
-        title(['estimated factors - fit #' num2str(n)])
+        viz_ktensor(est_factors, ... 
+            'Plottype', {'bar', 'line', 'scatter'}, ...
+            'Modetitles', {'neurons', 'time', 'trials'})
+        set(gcf, 'Name', ['estimated factors - fit #' num2str(n)])
     end
 end
 
@@ -138,7 +142,7 @@ figure(); hold on
 plot(randn(n_fits,1), err, 'ob')
 plot(0, true_err, 'or', 'markerfacecolor', 'r');
 xlim([-10,10])
-%ylim([0 1.0])
+ylim([0 1.0])
 set(gca,'xtick',[])
 ylabel('model error')
 legend('fits','true model')
