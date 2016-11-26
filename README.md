@@ -25,7 +25,7 @@ CP decomposition is an attractive technique both because it is conceptually simp
 * See [`/python`](/python) for an overview of the [*tensorly*](https://github.com/tensorly/tensorly) Python package
 * *Julia toolboxes are coming soon*
 
-Other toolboxes include [TensorLab](http://www.tensorlab.net/) (MATLAB) and [scikit-tensor](https://github.com/mnick/scikit-tensor).
+Other toolboxes include [TensorLab](http://www.tensorlab.net/) (MATLAB) and [scikit-tensor](https://github.com/mnick/scikit-tensor) (Python).
 
 ### Contact
 
