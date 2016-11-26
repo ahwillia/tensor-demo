@@ -14,12 +14,19 @@ CP decomposition extends PCA to higher-order tensors. In fact, PCA ***is*** CP d
 
 CP decomposition is an attractive technique both because it is conceptually simple (each trial is modeled as a linear combination of latent factors) and because it has some subtle advantages (the optimal model is unique, whereas the factors identified by PCA can be rotated arbitrarily without affecting reconstruction error).
 
-**More background reading:**
+#### More background reading
 
 * [Some notes on PCA, CP decomposition, and Demixed PCA](http://alexhwilliams.info/pdf/cpd_notes_janelia_2016.pdf)
 * [Bader & Kolda (2009). Tensor Decompositions and Applications. *SIAM Review*.](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)
 
+### Contents
 
-**Contact:**
+* See [`/matlab`](/matlab) for a tutorial on fitting tensor decompositions with Sandia's [TensorToolbox](http://www.sandia.gov/~tgkolda/TensorToolbox/)
+* See [`/python`](/python) for an overview of the [*tensorly*](https://github.com/tensorly/tensorly) Python package
+* *Julia toolboxes are coming soon*
+
+Other toolboxes include [TensorLab](http://www.tensorlab.net/) (MATLAB) and [scikit-tensor](https://github.com/mnick/scikit-tensor).
+
+### Contact
 
 Please [get in touch](mailto:alex.h.willia@gmail.com?Subject=Tensor%20demo) if you have any questions/comments.
