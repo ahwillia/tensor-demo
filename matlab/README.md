@@ -10,6 +10,20 @@ $  git clone https://github.com/ahwillia/tensor-demo.git
 
 Open MATLAB and navigate the folder containing this code and run the script `cp_demo` to generate some synthetic data and fit a third-order CP decomposition.
 
+### TL;DR
+
+Looking at the internals of `cp_demo` should give you a basic idea of how to apply CP decomposition to your own data. The essential workflow is embarassingly easy:
+
+```matlab
+data = % your 3-D data (neurons x time x trials)
+model = cp_als(tensor(data), 10) % fit CP model with 10 components
+visualize_neuron_ktensor(model) % produces a nice plot for you
+```
+
+As described below, it is a good idea to fit the model multiple times (each call to `cp_als` will start from a different random initial parameter set). Choosing the number of factors/components (4 in the demo, 10 in the example code above) can also require a bit of experimentation.
+
+## Digging into `cp-demo.m`
+
 You can play with various parameters/settings on the synthetic data. As long as noise is low enough, the CP decomposition (fit by alternating least-squares, as reviewed in [Kolda & Bader](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)) should do a pretty good job of estimating the true latent factors:
 
 
@@ -25,15 +39,3 @@ The dotplots below shows the reconstruction error for 30 model fits (blue) and t
 | ![Model error with low noise](img/low_noise.png) | ![Model error with factors of different magnitudes](img/diff_mag_factors.png) |
 
 Even in the more difficult scenario on the right, some of the initial guesses yield very good, nearly optimal solutions.
-
-### Take Home Message/Recipe
-
-Looking at the internals of `cp_demo` should give you a basic idea of how to apply CP decomposition to your own data. The essential workflow is embarassingly easy:
-
-```matlab
-data = % your 3-D data (neurons x time x trials)
-model = cp_als(data, 10) % fit CP model with 10 components
-visualize_neuron_ktensor(model) % produces a nice plot for you
-```
-
-As described above, it is a good idea to fit the model multiple times (each call to `cp_als` will start from a different random initial parameter set). Choosing the number of components (4 in the demo, 10 in the example code above) can also require a bit of experimentation.
