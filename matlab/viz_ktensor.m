@@ -69,7 +69,7 @@ for k = 1 : nd
         xpos = res.Hspaceleft + (k-1) * res.Hspace + sum(width(1:k-1));
         ypos = 1 - res.Vspacetop - height - (j-1) * (height + res.Vspace);
         FactorAxes(k,j) = axes('Position',[xpos ypos width(k) height]);
-        FactorAxes(k,j).FontSize = 14;
+        set(FactorAxes(k,j),'FontSize',14);
     end
 end
 
