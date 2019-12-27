@@ -112,7 +112,7 @@ for k = 1 : nd
         end
         
         xlim(FactorAxes(k,j),xl);
-        if res.Sameylims(k)
+        if res.Sameylims(j)
             ylim(FactorAxes(k,j),yl);
         else
             tmpyl = [ min(-0.01, min(U(:,j))), max( 0.01, max(U(:,j))) ];
