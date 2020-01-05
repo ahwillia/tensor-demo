@@ -16,7 +16,6 @@ CP decomposition is an attractive technique both because it is conceptually simp
 
 #### More background reading
 
-* [Some notes on PCA, CP decomposition, and Demixed PCA](http://alexhwilliams.info/pdf/cpd_notes_janelia_2016.pdf)
 * [Bader & Kolda (2009). Tensor Decompositions and Applications. *SIAM Review*.](http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf)
 
 ### Contents
