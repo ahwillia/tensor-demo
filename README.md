@@ -21,10 +21,8 @@ CP decomposition is an attractive technique both because it is conceptually simp
 ### Contents
 
 * See [`/matlab`](/matlab) for a tutorial on fitting tensor decompositions with Sandia's [TensorToolbox](http://www.sandia.gov/~tgkolda/TensorToolbox/)
-* See [`/python`](/python) for an overview of the [*tensorly*](https://github.com/tensorly/tensorly) Python package
-* *Julia toolboxes are coming soon*
-
-Other toolboxes include [TensorLab](http://www.tensorlab.net/) (MATLAB) and [scikit-tensor](https://github.com/mnick/scikit-tensor) (Python).
+* [TensorLab](http://www.tensorlab.net/) is another useful toolbox for MATLAB users.
+* For Python code, see [`tensortools`](https://github.com/ahwillia/tensortools) (a small library I made) and [`tensorly`](http://tensorly.org/stable/index.html) (a larger library with slightly different goals/focus).
 
 ### Contact
 
